@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stop de ontkoking - UI mockup</title>
+<!--
+  REFERENCE FILE, NOT THE REAL FRONTEND.
+  Static HTML version of the final UI mockup (desktop + mobile).
+  Every page from the mockup is a <section class="page"> below.
+  Desktop above 760px, mobile layout below 760px (resize the browser to see it).
+  Form "name" attributes match the database columns, see CLAUDE.md.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF6EC;
+    --text: #2A1745;
+    --muted: #6B5E7A;
+    --purple: #4B0E8F;
+    --dark: #2A1745;
+    --orange: #FF5A36;
+    --mint: #B8E8D6;
+    --yellow: #FFCA3A;
+    --lime: #C8F04B;
+    --card: #FFFFFF;
+    --border: #EFE3D5;
+    --row: #F6F0E8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: #E9E4DE; color: var(--text); }
+  a { color: inherit; text-decoration: none; }
+  ul, ol { padding-left: 18px; }
+
+  /* Dev label above each page (not part of the design) */
+  .page-label {
+    max-width: 1100px; margin: 40px auto 8px; padding: 0 16px;
+    font: 600 12px/1 monospace; color: #8A8090; text-transform: uppercase; letter-spacing: .05em;
+  }
+  .page { max-width: 1100px; margin: 0 auto; background: var(--bg); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+
+  /* Header */
+  .site-header {
+    background: #fff; border-bottom: 1px solid var(--border);
+    height: 56px; display: flex; align-items: center; justify-content: center; padding: 0 16px;
+  }
+  .site-header nav { display: flex; gap: 22px; font-size: 12px; font-weight: 700; margin-left: 140px; }
+  .hamburger { display: none; background: none; border: 0; font-size: 20px; color: var(--text); cursor: pointer; margin-left: auto; }
+
+  .content { padding: 40px 44px 48px; }
+
+  /* Typography */
+  h1 { font-size: 40px; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
+  h2 { font-size: 26px; font-weight: 800; }
+  h3 { font-size: 22px; font-weight: 800; }
+  .orange { color: var(--orange); }
+  .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 6px; }
+
+  /* Buttons, chips, inputs */
+  .btn {
+    display: inline-block; font: 700 12px Inter, sans-serif; padding: 8px 16px; border-radius: 4px;
+    border: 1.5px solid var(--dark); cursor: pointer; background: #fff; color: var(--text);
+  }
+  .btn-purple { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .btn-dark { background: var(--dark); color: #fff; }
+  .btn-orange { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .btn-pill { border-radius: 999px; padding: 8px 24px; }
+  .btn-sm { font-size: 11px; padding: 5px 14px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font: 700 11px Inter, sans-serif; padding: 6px 14px; border-radius: 6px;
+    border: 1.5px solid var(--dark); background: #fff; color: var(--text); cursor: pointer;
+  }
+  .chip.active-lime { background: var(--lime); }
+  .chip.active-purple { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+  .search { display: flex; gap: 10px; }
+  .search input {
+    flex: 1; max-width: 420px; height: 36px; border: 1px solid var(--border); border-radius: 4px;
+    background: #fff; padding: 0 12px; font: 14px Inter, sans-serif;
+  }
+  .search button { width: 80px; height: 36px; border: 0; border-radius: 4px; background: var(--orange); cursor: pointer; }
+
+  label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .field input, .field textarea, .field select {
+    width: 100%; border: 1.5px solid var(--dark); border-radius: 6px; background: #fff;
+    padding: 10px 12px; font: 14px Inter, sans-serif; color: var(--text);
+  }
+  .field textarea { resize: vertical; min-height: 180px; }
+
+  /* Image placeholders */
+  .img { border-radius: 6px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; color: var(--text); }
+  .mint { background: var(--mint); }
+  .yellow { background: var(--yellow); }
+  .red { background: var(--orange); }
+  .lime { background: var(--lime); }
+
+  /* Recipe card */
+  .grid { display: grid; gap: 18px; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 8px 22px; }
+  .card .img { position: relative; height: 92px; }
+  .badge {
+    position: absolute; top: 6px; left: 6px; background: var(--lime); border: 1.5px solid var(--dark);
+    border-radius: 5px; font-size: 10px; font-weight: 800; padding: 2px 10px;
+  }
+  .card .type { font-size: 8px; font-weight: 700; margin: 10px 0 2px; }
+  .card .title { font-size: 16px; font-weight: 800; }
+  .card .desc { font-size: 10px; color: var(--muted); margin-top: 6px; }
+
+  .panel { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; }
+
+  /* Home */
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; margin-bottom: 40px; }
+  .hero h1 { margin: 20px 0 44px; }
+  .hero .img { height: 230px; }
+  .hero .chips, .hero .actions { margin-top: 14px; }
+  .actions { display: flex; gap: 10px; }
+
+  /* Overview */
+  .overview-top { margin-bottom: 18px; }
+  .overview-top h1 { margin-bottom: 16px; }
+  .overview-top .chips { margin-top: 16px; }
+  .overview { display: grid; grid-template-columns: 170px 1fr; gap: 28px; align-items: start; }
+  .filters h3 { font-size: 16px; margin-bottom: 14px; }
+  .filters .filter-item {
+    display: block; background: var(--row); border: 1px solid var(--border); border-radius: 4px;
+    font-size: 11px; padding: 7px 10px; margin-bottom: 14px; color: var(--muted); cursor: pointer;
+  }
+  .results-count { font-size: 11px; font-weight: 700; margin: 6px 0 16px; }
+
+  /* Detail */
+  .back { font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 18px; }
+  .detail-top { display: grid; grid-template-columns: 1fr 1.25fr; gap: 50px; margin-bottom: 26px; }
+  .detail-top .img { height: 290px; }
+  .detail-top h1 { margin: 6px 0 10px; }
+  .meta { font-size: 11px; color: var(--muted); margin-bottom: 90px; }
+  .detail-bottom { display: grid; grid-template-columns: 1fr 2fr; gap: 44px; align-items: start; }
+  .detail-bottom h3 { margin-bottom: 14px; }
+  .detail-bottom li { font-size: 11px; margin-bottom: 12px; }
+  .detail-bottom ol li { margin-bottom: 18px; }
+
+  /* Add recipe */
+  .add-head h1 { font-size: 60px; margin-bottom: 70px; }
+  .form-card { border: 2px solid var(--dark); border-radius: 12px; background: #fff; padding: 22px 22px 18px; }
+  .row { display: grid; gap: 28px; margin-bottom: 12px; }
+  .row-3 { grid-template-columns: 2fr 1fr 1fr; }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-1 { grid-template-columns: 1fr; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 60px; }
+
+  /* Login + my recipes */
+  .login-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; }
+  .login-card { min-height: 520px; }
+  .login-card h1 { margin-bottom: 14px; }
+  .login-card p { font-size: 11px; color: var(--muted); margin-bottom: 44px; }
+  .login-card .field { margin-bottom: 16px; }
+  .login-card .field input { border: 1px solid var(--border); height: 36px; }
+  .my-head { display: flex; justify-content: space-between; align-items: center; margin: 8px 0 18px; }
+  .my-recipes .grid { gap: 28px; }
+
+  /* Admin */
+  .admin h1 { margin-bottom: 36px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 170px); gap: 26px; margin-bottom: 44px; }
+  .stat { height: 84px; }
+  .stat .label { font-size: 11px; font-weight: 700; }
+  .stat .value { font-size: 22px; font-weight: 800; margin-top: 10px; }
+  .admin-table { width: 100%; border-collapse: separate; border-spacing: 0 14px; font-size: 11px; }
+  .admin-table th { text-align: left; font-weight: 700; padding: 0 12px; }
+  .admin-table td { background: var(--row); padding: 12px; color: var(--muted); }
+  .admin-table td .btn { margin-right: 6px; }
+
+  .mobile-only { display: none; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 760px) {
+    .page-label { margin-top: 28px; }
+    .site-header { justify-content: flex-end; }
+    .site-header nav { display: none; }
+    .site-header nav.open {
+      display: flex; flex-direction: column; position: absolute; top: 56px; right: 16px;
+      background: #fff; border: 1px solid var(--border); padding: 14px 18px; margin: 0; gap: 12px; z-index: 5;
+    }
+    .site-header { position: relative; }
+    .hamburger { display: block; }
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+
+    .content { padding: 24px 16px 32px; }
+    h1 { font-size: 28px; }
+
+    .hero { grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+    .hero h1 { margin: 10px 0 30px; font-size: 26px; }
+    .hero .img { height: 140px; }
+
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .card .img { height: 100px; }
+
+    .overview { grid-template-columns: 1fr; }
+    .filters, .results-count { display: none; }
+    .chip.extra { display: none; }
+
+    .detail-top, .detail-bottom { grid-template-columns: 1fr; gap: 14px; }
+    .detail-top .img { height: 180px; }
+    .meta { margin-bottom: 40px; }
+
+    .add-head { display: none; }
+    .form-card { border: 0; padding: 0; background: transparent; }
+    .row-3, .row-2 { grid-template-columns: 1fr; gap: 12px; }
+    .field input, .field textarea, .field select { border: 0; background: #F2EDE6; }
+    .form-actions { justify-content: space-between; margin-top: 20px; }
+
+    .login-layout { grid-template-columns: 1fr; gap: 20px; }
+    .login-card { min-height: 0; }
+    .login-card p { margin-bottom: 20px; }
+
+    .stats { grid-template-columns: 1fr; gap: 12px; margin-bottom: 24px; }
+    .stat { height: auto; }
+    .admin-table thead { display: none; }
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+    .admin-table tr { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-bottom: 12px; }
+    .admin-table td { background: none; padding: 2px 0; }
+    .admin-table td:first-child { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .admin-table td[data-label]::before { content: attr(data-label) ": "; }
+    .admin-table td:last-child { margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE: Home (index.php)
+     ============================================================ -->
+<div class="page-label">Pagina: Home</div>
+<section class="page" id="home">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <div class="hero">
+      <div>
+        <h1 class="desktop-only">Samen sneller en<br><span class="orange">makkelijker koken</span></h1>
+        <h1 class="mobile-only">Sneller leren<br><span class="orange">koken</span></h1>
+        <form class="search" action="#recepten" method="get">
+          <input type="search" name="q" aria-label="Zoek een recept">
+          <button type="submit" aria-label="Zoeken"></button>
+        </form>
+        <div class="chips desktop-only">
+          <button class="chip">Ontbijt</button>
+          <button class="chip">Lunch</button>
+          <button class="chip">Diner</button>
+          <button class="chip active-lime">Snel</button>
+        </div>
+        <div class="actions desktop-only">
+          <a class="btn btn-purple" href="#toevoegen">Recept delen</a>
+          <a class="btn" href="#profiel">Inloggen</a>
+        </div>
+      </div>
+      <div class="img mint"></div>
+    </div>
+
+    <h2 class="desktop-only" style="margin-bottom:22px">Populaire recepten</h2>
+    <h3 class="mobile-only" style="font-size:16px;margin-bottom:14px">Populair</h3>
+    <div class="grid grid-3">
+      <a class="card" href="#detail">
+        <div class="img mint"><span class="badge">20 min</span></div>
+        <div class="type">Diner</div><div class="title">Crispy chicken bowl</div>
+      </a>
+      <a class="card desktop-only" href="#detail">
+        <div class="img yellow"><span class="badge">18 min</span></div>
+        <div class="type">Diner</div><div class="title">Romige tomatenpasta</div>
+      </a>
+      <a class="card desktop-only" href="#detail">
+        <div class="img red"><span class="badge">10 min</span></div>
+        <div class="type">Ontbijt</div><div class="title">Green power toast</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: Receptenoverzicht (recepten.php)
+     Filters: meal type + categories (Vega, Budget, High protein = Eiwitrijk),
+     "Onder 20 min" = prep_time <= 20
+     ============================================================ -->
+<div class="page-label">Pagina: Receptenoverzicht</div>
+<section class="page" id="recepten">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <div class="overview-top">
+      <h1><span class="desktop-only">Receptenoverzicht</span><span class="mobile-only">Recepten</span></h1>
+      <form class="search" method="get">
+        <input type="search" name="q" aria-label="Zoek een recept">
+        <button type="submit" aria-label="Zoeken"></button>
+      </form>
+      <div class="chips">
+        <button class="chip active-purple">Alles</button>
+        <button class="chip">Ontbijt</button>
+        <button class="chip">Lunch</button>
+        <button class="chip">Diner</button>
+        <button class="chip extra">Vega</button>
+        <button class="chip extra">Budget</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <aside class="panel filters">
+        <h3>Filters</h3>
+        <span class="filter-item">Onder 20 min</span>
+        <span class="filter-item">High protein</span>
+        <span class="filter-item">Budget</span>
+        <span class="filter-item">Vega</span>
+        <span class="filter-item">Lunch</span>
+        <span class="filter-item">Diner</span>
+      </aside>
+      <div>
+        <div class="results-count">6 resultaten</div>
+        <div class="grid grid-3">
+          <a class="card" href="#detail">
+            <div class="img mint"><span class="badge">20 min</span></div>
+            <div class="type">Diner</div><div class="title">Crispy chicken bowl</div>
+            <div class="desc">Korte omschrijving van het recept.</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img yellow"><span class="badge">18 min</span></div>
+            <div class="type">Diner</div><div class="title">Romige tomatenpasta</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img red"><span class="badge">10 min</span></div>
+            <div class="type">Ontbijt</div><div class="title">Green power toast</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img lime"><span class="badge">12 min</span></div>
+            <div class="type">Ontbijt</div><div class="title">Bananen pancakes</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img red"><span class="badge">15 min</span></div>
+            <div class="type">Lunch</div><div class="title">Spicy halloumi wraps</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img mint"><span class="badge">25 min</span></div>
+            <div class="type">Diner</div><div class="title">Teriyaki rijst bowl</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: Recept detail (recept.php?id=...)
+     "Bewaren" = add to favorites (logged in only)
+     "Bewerken" = only visible for the owner or an admin
+     ============================================================ -->
+<div class="page-label">Pagina: Recept detail</div>
+<section class="page" id="detail">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <a class="back" href="#recepten">&larr; <span class="desktop-only" style="display:inline">terug naar recepten</span></a>
+    <div class="detail-top">
+      <div class="img mint"></div>
+      <div>
+        <h1>Crispy chicken bowl</h1>
+        <div class="meta">Diner | 20 min | 2 personen</div>
+        <div class="actions">
+          <form method="post"><input type="hidden" name="recipe_id" value="1"><button class="btn" name="action" value="favorite">Bewaren</button></form>
+          <a class="btn btn-purple" href="#toevoegen">Bewerken</a>
+        </div>
+      </div>
+    </div>
+    <div class="detail-bottom">
+      <div class="panel">
+        <h3>Ingrediënten</h3>
+        <ul>
+          <li>150 g rijst</li>
+          <li>250 g kipfilet</li>
+          <li>1 paprika</li>
+          <li>1/2 komkommer</li>
+          <li>1 avocado</li>
+          <li>2 el sojasaus</li>
+          <li>sesam</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Bereiding</h3>
+        <ol>
+          <li>Kook de rijst volgens de verpakking.</li>
+          <li>Bak de kip in een pan.</li>
+          <li>Snijd de groenten klein.</li>
+          <li>Meng saus door de kip.</li>
+          <li>Doe alles samen in een bowl.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: Recept toevoegen (toevoegen.php)
+     Field names match database columns.
+     OPEN QUESTIONS (see CLAUDE.md):
+     - "image_url" only exists in the mobile mockup, added here for both.
+     - No field yet for servings (personen) or tags (vega, budget, ...).
+     - Ingredients is one textarea, DB stores amount/unit/name separately.
+     ============================================================ -->
+<div class="page-label">Pagina: Recept toevoegen</div>
+<section class="page" id="toevoegen">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <div class="add-head">
+      <div class="eyebrow">DEEL JE RECEPT</div>
+      <h1>WAT KOOK JIJ?</h1>
+    </div>
+    <h1 class="mobile-only" style="margin-bottom:14px">Recept toevoegen</h1>
+
+    <form class="form-card" method="post">
+      <div class="row row-3">
+        <div class="field"><label for="title">Titel</label><input id="title" name="title" type="text"></div>
+        <div class="field">
+          <label for="category_id">Maaltijdtype</label>
+          <select id="category_id" name="category_id">
+            <option value=""></option>
+            <option value="1">Ontbijt</option>
+            <option value="2">Lunch</option>
+            <option value="3">Diner</option>
+          </select>
+        </div>
+        <div class="field"><label for="prep_time">Bereidingstijd</label><input id="prep_time" name="prep_time" type="number" min="1"></div>
+      </div>
+      <div class="row row-1">
+        <div class="field"><label for="image_url">Afbeelding URL</label><input id="image_url" name="image_url" type="url"></div>
+      </div>
+      <div class="row row-1">
+        <div class="field"><label for="description">Korte omschrijving</label><input id="description" name="description" type="text"></div>
+      </div>
+      <div class="row row-2">
+        <div class="field"><label for="ingredients">Ingrediënten</label><textarea id="ingredients" name="ingredients"></textarea></div>
+        <div class="field"><label for="steps">Stappen</label><textarea id="steps" name="steps"></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-pill" type="reset">Leegmaken</button>
+        <button class="btn btn-pill btn-dark desktop-only" type="submit">Publiceren</button>
+        <button class="btn btn-orange mobile-only" type="submit" style="padding:8px 40px">Opslaan</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: Profiel (profiel.php)
+     Logged out: login form. Logged in: "Mijn recepten".
+     The mockup shows both side by side.
+     ============================================================ -->
+<div class="page-label">Pagina: Inloggen + Mijn recepten (profiel)</div>
+<section class="page" id="profiel">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <div class="login-layout">
+      <form class="panel login-card" method="post" action="login.php">
+        <h1>Inloggen</h1>
+        <p>Log in om recepten toe te voegen en te bewaren.</p>
+        <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email"></div>
+        <div class="field"><label for="password">Wachtwoord</label><input id="password" name="password" type="password"></div>
+        <button class="btn btn-purple" type="submit" style="padding:8px 26px">Inloggen</button>
+      </form>
+
+      <div class="my-recipes">
+        <div class="my-head">
+          <h2 class="desktop-only">Mijn recepten</h2>
+          <a class="btn btn-orange btn-sm" href="#toevoegen" style="margin-left:auto">+ nieuw recept</a>
+        </div>
+        <div class="grid grid-2">
+          <a class="card" href="#detail">
+            <div class="img mint"><span class="badge">20 min</span></div>
+            <div class="type">Diner</div><div class="title">Crispy chicken bowl</div>
+          </a>
+          <a class="card" href="#detail">
+            <div class="img lime"><span class="badge">10 min</span></div>
+            <div class="type">Ontbijt</div><div class="title">Green power toast</div>
+          </a>
+          <a class="card desktop-only" href="#detail">
+            <div class="img yellow"><span class="badge">18 min</span></div>
+            <div class="type">Diner</div><div class="title">Romige tomatenpasta</div>
+          </a>
+          <a class="card desktop-only" href="#detail">
+            <div class="img red"><span class="badge">15 min</span></div>
+            <div class="type">Lunch</div><div class="title">Spicy halloumi wraps</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE: Adminpaneel (admin.php, role = admin only)
+     Stats: COUNT(*) from recipes, users, favorites
+     Status column needs recipes.status (see CLAUDE.md)
+     ============================================================ -->
+<div class="page-label">Pagina: Adminpaneel</div>
+<section class="page admin" id="admin">
+  <header class="site-header">
+    <nav><a href="#home">Home</a><a href="#recepten">Recepten</a><a href="#toevoegen">Toevoegen</a><a href="#profiel">Profiel</a></nav>
+    <button class="hamburger" aria-label="Menu">&#9776;</button>
+  </header>
+  <div class="content">
+    <h1>Adminpaneel</h1>
+    <div class="stats">
+      <div class="panel stat"><div class="label">Totaal recepten</div><div class="value">6</div></div>
+      <div class="panel stat"><div class="label">Gebruikers</div><div class="value">3</div></div>
+      <div class="panel stat"><div class="label">Favorieten</div><div class="value">3</div></div>
+    </div>
+
+    <div class="panel">
+      <h2 style="margin-bottom:4px">Recepten beheren</h2>
+      <table class="admin-table">
+        <thead><tr><th style="width:50%">Recept</th><th>Type</th><th>Status</th><th>Acties</th></tr></thead>
+        <tbody>
+          <tr><td>Crispy chicken bowl</td><td data-label="Type">Diner</td><td data-label="Status">online</td>
+            <td><a class="btn btn-sm" href="#toevoegen">Bewerk</a><button class="btn btn-sm">Wis</button></td></tr>
+          <tr><td>Romige tomatenpasta</td><td data-label="Type">Diner</td><td data-label="Status">online</td>
+            <td><a class="btn btn-sm" href="#toevoegen">Bewerk</a><button class="btn btn-sm">Wis</button></td></tr>
+          <tr><td>Green power toast</td><td data-label="Type">Ontbijt</td><td data-label="Status">online</td>
+            <td><a class="btn btn-sm" href="#toevoegen">Bewerk</a><button class="btn btn-sm">Wis</button></td></tr>
+          <tr><td>Spicy halloumi wraps</td><td data-label="Type">Lunch</td><td data-label="Status">online</td>
+            <td><a class="btn btn-sm" href="#toevoegen">Bewerk</a><button class="btn btn-sm">Wis</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div style="height:60px"></div>
+
+<script>
+  // Mobile menu toggle
+  document.querySelectorAll('.hamburger').forEach(btn => {
+    btn.addEventListener('click', () => btn.previousElementSibling.classList.toggle('open'));
+  });
+</script>
+</body>
+</html>
